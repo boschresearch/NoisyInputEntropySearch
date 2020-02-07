@@ -1,0 +1,17 @@
+name: nes
+channels:
+- defaults
+- conda-forge
+dependencies:
+- python=3.6
+- cython
+- numpy
+- scipy
+- gpy
+- matplotlib
+- scikit-learn
+- pip
+- pip:
+    - tqdm
+    - sobol-seq
+
