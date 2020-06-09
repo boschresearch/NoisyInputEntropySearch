@@ -18,7 +18,7 @@
 
 import numpy as np
 from scipy import stats
-
+import rocket_sim
 
 def synthetic_1d_01(x, noise_var=0.0):
     f = np.sin(5 * np.pi * x**2) + 0.5*x
@@ -84,3 +84,38 @@ def hartmann_3d(x, noise_var=0.0):
             tmp += (A[i, j]*(x[:, j] - P[i, j])**2)[:, None]
         f += alpha[i] * np.exp(-tmp)
     return f + np.sqrt(noise_var) * np.random.randn(*f.shape)
+
+
+def rocket_simulation(x, noise_var=0.0):
+    x = np.atleast_2d(x)
+    f = np.empty((x.shape[0], 1))
+
+    world = rocket_sim.WorldModel()
+    sim = rocket_sim.WorldSimulation(world.ode_rhs)
+
+    # Set up the simulation and parameters
+    dt = 0.001
+    n_steps = 4000
+
+    # Run simulation for each configuration
+    for i, xi in enumerate(x):
+        # Notational convenience for initial angle and initial speed
+        a0 = xi[0]
+        s0 = xi[1]
+
+        # Construct initial state from configuration
+        v0 = s0 * np.array([np.cos(a0), np.sin(a0)])
+        p0 = np.array([0.1, 0.0])
+        x0 = np.hstack((p0, v0))
+
+        # Run simulation
+        x, t = sim.run(x0, dt, n_steps)
+
+        # Evaluate trajectory
+        d = np.linalg.norm(x[:, :2] - world.target_planet.pos, axis=1)
+        idx_min = np.argmin(d)
+        closest_point = d[idx_min]
+        f[i] = closest_point + 2 * s0
+
+    f = np.log10(f)  # log-transformation makes value range nicer
+    return -f + np.sqrt(noise_var)*np.random.randn(*f.shape)
