@@ -1,6 +1,6 @@
 # Noisy-Input Entropy Search
 
-This is the companion code for the paper *Noisy-Input Entropy Search for Efficient Robust Bayesian Optimization* by Lukas P. Fröhlich et al., AISTATS 2020. The paper can be found [here](https://arxiv.org/abs/2002.02820). The code allows users to experiment with the provided acquisition function. Please cite the above paper when reporting, reproducing or extending the results.
+This is the companion code for the paper *Noisy-Input Entropy Search for Efficient Robust Bayesian Optimization* by Lukas P. Fröhlich et al., AISTATS 2020. The paper can be found [here](http://proceedings.mlr.press/v108/frohlich20a.html). The code allows users to experiment with the provided acquisition function. Please cite the above paper when reporting, reproducing or extending the results.
 
 ## Purpose of the project
 
